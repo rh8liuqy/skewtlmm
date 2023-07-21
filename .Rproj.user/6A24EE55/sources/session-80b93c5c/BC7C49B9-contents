@@ -1,0 +1,18 @@
+* installing *source* package ‘skewtlmm’ ...
+** using staged installation
+** libs
+using C++ compiler: ‘g++ (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0’
+g++ -std=gnu++17 -I"/opt/R/4.3.0/lib/R/include" -DNDEBUG  -I'/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/Rcpp/include' -I'/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/RcppArmadillo/include' -I'/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/BH/include' -I/usr/local/include   -fopenmp -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/opt/R/4.3.0/lib/R/include" -DNDEBUG  -I'/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/Rcpp/include' -I'/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/RcppArmadillo/include' -I'/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/BH/include' -I/usr/local/include   -fopenmp -fpic  -g -O2  -c fastLik.cpp -o fastLik.o
+g++ -std=gnu++17 -shared -L/opt/R/4.3.0/lib/R/lib -L/usr/local/lib -o skewtlmm.so RcppExports.o fastLik.o -fopenmp -llapack -lblas -lgfortran -lm -lquadmath -L/opt/R/4.3.0/lib/R/lib -lR
+installing to /home/kevin_liu/work/2023-07-26/skewtlmm.Rcheck/00LOCK-skewtlmm/00new/skewtlmm/libs
+** R
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (skewtlmm)

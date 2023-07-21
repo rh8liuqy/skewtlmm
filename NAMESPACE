@@ -1,0 +1,3 @@
+importFrom(Rcpp, evalCpp)
+useDynLib(skewtlmm, .registration = TRUE)
+export("distributed_EM_model")

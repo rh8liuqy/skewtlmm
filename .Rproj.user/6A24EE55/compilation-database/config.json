@@ -1,0 +1,28 @@
+{
+    "args": [
+        "-std=gnu++17",
+        "-I/opt/R/4.3.0/lib/R/include",
+        "-DNDEBUG",
+        "-I/usr/local/include",
+        "-fopenmp",
+        "-fpic",
+        "-I/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/Rcpp/include",
+        "-I/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/RcppArmadillo/include",
+        "-I/home/kevin_liu/R/x86_64-pc-linux-gnu-library/4.3/BH/include",
+        "-DEIGEN_DONT_VECTORIZE",
+        "-I/usr/lib/llvm-10/lib/clang/10.0.0/include",
+        "-I/usr/include/c++/9",
+        "-I/usr/include/x86_64-linux-gnu/c++/9",
+        "-I/usr/include/c++/9/backward",
+        "-I/usr/lib/gcc/x86_64-linux-gnu/9/include",
+        "-I/usr/local/include",
+        "-I/usr/include/x86_64-linux-gnu",
+        "-I/usr/include"
+    ],
+    "pch": "RcppArmadillo",
+    "is_cpp": true,
+    "hash": "168990841416898959891689895989",
+    "compiler": "1465303102426788192",
+    "rversion": "4.3.0",
+    "dbversion": 4
+}
