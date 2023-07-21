@@ -3,10 +3,18 @@ In order to use the script, you will need to download the STDEC_script.R and fas
 # Use
 The primary script, utilized to fit the skew- $t$ linear mixed model is uploaded here. This function takes primary arguments of $Y$, a list of response vectors per subject with overall list length $N$, $X$, a list of covariate matrices per subject with list length $N$, $T_i$, a list of observation times per subject, and $n_i$, a list of number of observations per subject. Initial values should be provided to the function of all parameters in the model. As the $AECM$ algorithm only guarantees convergence to a local minima of the objective function, the script should ideally be rerun multiple times with different starting values in order to ensure convergence to the global optima. In practice, users may want to utilize smaller tolerances to ensure convergence. 
 
+# Install the package
+
+```r
+#Install the package.
+devtools::install_github("rh8liuqy/skewtlmm")
+```
+
 # Example
 
 
 ```r
+library(skewtlmm)
 #Set a seed
 set.seed(1352)
 ## Load library
@@ -52,56 +60,13 @@ T_i = simulated_data[[4]]
 ni = simulated_data[[5]]
 N = length(Y)
 
-#The below code utilizes 12 cores to fit the model with 3 different fractional return hyperparameters: 0.25, 0.5, and 0.75. 
-
-library(purrr)
-library(parallel)
-library(mvtnorm)
-library(doParallel)
-
-#setup parallel cluster
-cl <- makeCluster(numCores)
-setDefaultCluster(cl)
-registerDoParallel(cl)
-idList = split(1:N, cut(1:N, c(0,sample(1:N, 12-1),N)))
-clusterExport(cl, c('idList', 'pmap'))
-
-yL = Y
-xL = X
-zL = Z 
-niL = ni 
-tiL = T_i 
-
-#export data to the cluster we just set up
-clusterExport(cl, c('yL', 'xL', 'zL', 'niL', 'tiL'))
-
-clusterApply(cl, 1:numCores, function(x){
-  ind_L = idList[[x]]
-  Y <<- yL[ind_L]
-  X <<- xL[ind_L]
-  Z <<- zL[ind_L]
-  ni <<- niL[ind_L]
-  T_i <<- tiL[ind_L]
-  return(TRUE)
-})
-
-numCores = 12
-nwait = 3
-source('STDEC_script.R')
-gamma_25 = para
-
-nwait = 6
-source('STDEC_script.R')
-gamma_50 = para
-
-nwait = 9
-source('STDEC_script.R')
-gamma_75 = para
-
-#Time
-print(c(gamma_25$time[1], gamma_50$time[1], gamma_75$time[1]))
-#Iterations
-print(c(gamma_25$time[2], gamma_50$time[2], gamma_75$time[2]))
-            
-
+#The below code utilizes 12 cores.
+distributed_EM_model(numCores = 12,
+                     nwaitf = 3,
+                     Yf = Y,
+                     Xf = X,
+                     Zf = Z,
+                     nif = ni,
+                     T_if = T_i,
+                     option = "skewt")
 ```
