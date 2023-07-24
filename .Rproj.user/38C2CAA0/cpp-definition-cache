@@ -1,0 +1,19 @@
+[
+    {
+        "file": "C:/Users/Kevin_Liu/Documents/GitHub/skewtlmm/src/fastLik.cpp",
+        "file_last_write": 1689896183.0,
+        "definitions": [
+            {
+                "usr": "c:@F@fastLikelihood#&1$@N@Rcpp@S@Vector>#VI14#@N@Rcpp@ST>1#T@PreserveStorage#&1d#&1$@N@arma@S@Mat>#d#&1$@N@Rcpp@S@Vector>#VI19#@N@Rcpp@ST>1#T@PreserveStorage#S2_#S5_#S2_#S5_#S5_#S0_#S2_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "fastLikelihood(const Rcpp::NumericVector &, const double &, const arma::mat &, const Rcpp::List &, const double &, const Rcpp::List &, const double &, const Rcpp::List &, const Rcpp::List &, const Rcpp::NumericVector &, const double &)",
+                "file": "C:/Users/Kevin_Liu/Documents/GitHub/skewtlmm/src/fastLik.cpp",
+                "line": 10,
+                "column": 8,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    }
+]
