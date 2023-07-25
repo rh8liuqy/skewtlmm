@@ -1,7 +1,3 @@
-library(parallel)
-library(RcppArmadillo)
-library(Rcpp)
-
 distributed_EM_model <- function(numCores,
                                  nwaitf,
                                  Yf,
@@ -10,10 +6,10 @@ distributed_EM_model <- function(numCores,
                                  nif,
                                  T_if,
                                  option) {
-    library(purrr)
-    library(parallel)
-    library(mvtnorm)
-    library(doParallel)
+    if (numCores < nwaitf) {
+        print("Error: numCores must be larger than or equal to nwaitf!")
+        return(NULL)
+    }
     N <<- length(Y)
     numCores <<- numCores
 
