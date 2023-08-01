@@ -8,14 +8,8 @@ Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: GPL (>= 2)
 Encoding: UTF-8
-LazyData: true
-Depends: Rcpp (>= 1.0.9),
-         RcppArmadillo,
-         parallel,
-         mvtnorm,
-         doParallel,
-         purrr
-LinkingTo: Rcpp, 
-           RcppArmadillo, 
-           BH
-RoxygenNote: 7.2.3
+Depends: Rcpp (>= 1.0.9), RcppArmadillo,
+Import: parallel, mvtnorm, doParallel, purrr, dplyr
+LinkingTo: Rcpp, RcppArmadillo, BH
+NeedsCompilation: yes
+Packaged: 2023-08-01 21:28:36 UTC; Kevin_Liu
