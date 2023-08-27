@@ -15,13 +15,18 @@ distributed_EM_model <- function(numCores,
         return(NULL)
     }
     N <<- length(Y)
+    if (N < 1e4 & (numCores > 1 | nwaitf > 1)) {
+        warning(paste0("The sample size N: ", N, " is small for distributed AECM."))
+    }
     numCores <<- numCores
 
     #setup parallel cluster
     cl <<- makeCluster(numCores)
     setDefaultCluster(cl)
     registerDoParallel(cl)
-    idList <<- split(1:N, cut(1:N, c(0,sample(1:N, numCores-1),N)))
+    idList <<- split(1:N, 
+                     cut(1:N,  
+                         c(0,sample(1:(N-1), numCores-1, replace = FALSE),N)))
     clusterExport(cl, c('idList', 'pmap'))
     clusterEvalQ(cl, {library(purrr)
         library(parallel)
@@ -63,20 +68,6 @@ distributed_EM_model <- function(numCores,
     else if (option == "skewT-normal") {
         script_path <- system.file("/Reuben_Retnam_Code/STNormal_script.R",package = "skewtlmm")
         source(script_path)
-        para <- STLMM.AECM.ND(Y=Y,
-                              X=X,
-                              Z=Z,
-                              N=N,
-                              ni=ni,
-                              T_i=T_i,
-                              be=be_init,
-                              la=c(1),
-                              s2=2,
-                              Ga=matrix(c(0.35),1,1),
-                              nu=7,
-                              tol=1e-4,
-                              max.iter=5e5,
-                              per=1)
     }
     else if (option == "skewN-DEC") {
         script_path <- system.file("/Reuben_Retnam_Code/SNDEC_script.R",package = "skewtlmm")
@@ -85,52 +76,14 @@ distributed_EM_model <- function(numCores,
     else if (option == "skewN-normal") {
         script_path <- system.file("/Reuben_Retnam_Code/SNnormal_script.R",package = "skewtlmm")
         source(script_path)
-        para <- SNLMM.AECM(Y=Y,
-                           X=X,
-                           Z=Z,
-                           N=N,
-                           ni=ni,
-                           T_i=T_i,
-                           be=be_init,
-                           la=1,
-                           s2=2,
-                           Ga=matrix(c(0.35),1,1),
-                           tol=1e-4,
-                           max.iter=5e5,
-                           per=1)
     }
     else if (option == "normal-DEC") {
         script_path <- system.file("/Reuben_Retnam_Code/NLMM_DEC.R",package = "skewtlmm")
         source(script_path)
-        para <- NLMM.AECM.DEC(Y=Y,
-                              X=X,
-                              Z=Z,
-                              N=N,
-                              ni=ni,
-                              T_i=T_i,
-                              be=be_init,
-                              s2=2,
-                              Ga=matrix(c(0.35),1,1),
-                              covar_params=c(.5,.9),
-                              tol=1e-4,
-                              max.iter=5e5,
-                              per=1)
     }
     else if (option == "normal-normal") {
         script_path <- system.file("/Reuben_Retnam_Code/NLMM_normal.R",package = "skewtlmm")
         source(script_path)
-        para <- NLMM.AECM(Y=Y,
-                          X=X,
-                          Z=Z,
-                          N=N,
-                          ni=ni,
-                          T_i=T_i,
-                          be=be_init,
-                          s2=2,
-                          Ga=matrix(c(0.35),1,1),
-                          tol=1e-4,
-                          max.iter=5e5,
-                          per=1)
     }
     stopCluster(cl)
     output = para

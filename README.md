@@ -45,7 +45,7 @@ gen_DS = function(N = 1e5) {
     tList = lapply(ni, function(x) cumsum(rpois(x,3)+1))
     covar_params = c(0.5,0.9)
     ei = pmap(list(ni,tList), function(n,t_i) rmvt(n = 1, sigma = covar_params[1]^abs(outer(t_i,t_i,'-'))^covar_params[2],df = 4) %>% t)
-
+    
     xList = lapply(tList, function(x) matrix(c(rep(1, length(x)),rnorm(length(x)), rnorm(length(x))), ncol = 3))
     yList = pmap(list(ei, bi, xList), function(e,b, xl) -2 + 2*xl[,2] - 2*xl[,3]+ as.numeric(b) + e)
     zList = lapply(yList, function(x) matrix(c(rep(1, length(x))),ncol = 1))
@@ -53,7 +53,7 @@ gen_DS = function(N = 1e5) {
 }
 
 #Create simulated data
-simulated_data = gen_DS(N = 1e5)
+simulated_data = gen_DS(N = 1e2)
 #Setup data values
 Y = simulated_data[[1]]
 X = simulated_data[[2]]
@@ -62,8 +62,71 @@ T_i = simulated_data[[4]]
 ni = simulated_data[[5]]
 N = length(Y)
 
-#The below code utilizes 12 cores.
-output <- distributed_EM_model(numCores = 12,
+output <- distributed_EM_model(numCores = 2,
+                               nwaitf = 1,
+                               Yf = Y,
+                               Xf = X,
+                               Zf = Z,
+                               nif = ni,
+                               T_if = T_i,
+                               option = "skewT-DEC")
+
+output <- distributed_EM_model(numCores = 2,
+                               nwaitf = 1,
+                               Yf = Y,
+                               Xf = X,
+                               Zf = Z,
+                               nif = ni,
+                               T_if = T_i,
+                               option = "skewN-DEC")
+
+output <- distributed_EM_model(numCores = 2,
+                               nwaitf = 1,
+                               Yf = Y,
+                               Xf = X,
+                               Zf = Z,
+                               nif = ni,
+                               T_if = T_i,
+                               option = "normal-DEC")
+
+output <- distributed_EM_model(numCores = 2,
+                               nwaitf = 1,
+                               Yf = Y,
+                               Xf = X,
+                               Zf = Z,
+                               nif = ni,
+                               T_if = T_i,
+                               option = "skewT-normal")
+
+output <- distributed_EM_model(numCores = 2,
+                               nwaitf = 1,
+                               Yf = Y,
+                               Xf = X,
+                               Zf = Z,
+                               nif = ni,
+                               T_if = T_i,
+                               option = "skewN-normal")
+
+output <- distributed_EM_model(numCores = 2,
+                               nwaitf = 1,
+                               Yf = Y,
+                               Xf = X,
+                               Zf = Z,
+                               nif = ni,
+                               T_if = T_i,
+                               option = "normal-normal")
+
+#Create simulated data
+simulated_data = gen_DS(N = 1e4)
+#Setup data values
+Y = simulated_data[[1]]
+X = simulated_data[[2]]
+Z = simulated_data[[3]]
+T_i = simulated_data[[4]]
+ni = simulated_data[[5]]
+N = length(Y)
+
+output <- distributed_EM_model(numCores = 8,
                                nwaitf = 3,
                                Yf = Y,
                                Xf = X,
@@ -72,7 +135,7 @@ output <- distributed_EM_model(numCores = 12,
                                T_if = T_i,
                                option = "skewT-DEC")
 
-output <- distributed_EM_model(numCores = 12,
+output <- distributed_EM_model(numCores = 8,
                                nwaitf = 3,
                                Yf = Y,
                                Xf = X,
@@ -81,7 +144,7 @@ output <- distributed_EM_model(numCores = 12,
                                T_if = T_i,
                                option = "skewN-DEC")
 
-output <- distributed_EM_model(numCores = 12,
+output <- distributed_EM_model(numCores = 8,
                                nwaitf = 3,
                                Yf = Y,
                                Xf = X,
@@ -90,7 +153,7 @@ output <- distributed_EM_model(numCores = 12,
                                T_if = T_i,
                                option = "normal-DEC")
 
-output <- distributed_EM_model(numCores = 12,
+output <- distributed_EM_model(numCores = 8,
                                nwaitf = 3,
                                Yf = Y,
                                Xf = X,
@@ -99,7 +162,7 @@ output <- distributed_EM_model(numCores = 12,
                                T_if = T_i,
                                option = "skewT-normal")
 
-output <- distributed_EM_model(numCores = 12,
+output <- distributed_EM_model(numCores = 8,
                                nwaitf = 3,
                                Yf = Y,
                                Xf = X,
@@ -108,7 +171,7 @@ output <- distributed_EM_model(numCores = 12,
                                T_if = T_i,
                                option = "skewN-normal")
 
-output <- distributed_EM_model(numCores = 12,
+output <- distributed_EM_model(numCores = 8,
                                nwaitf = 3,
                                Yf = Y,
                                Xf = X,
@@ -118,4 +181,5 @@ output <- distributed_EM_model(numCores = 12,
                                option = "normal-normal")
 
 print("all success!")
+
 ```
